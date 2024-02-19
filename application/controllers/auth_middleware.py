@@ -8,9 +8,9 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         try:
-            parser = reqparse.RequestParser()
-            parser.add_argument('auth_token', location='cookies', required=False)
-            parsed_args = parser.parse_args()
+            parse = reqparse.RequestParser()
+            parse.add_argument('auth_token', location='cookies', required=False)
+            parsed_args = parse.parse_args()
 
             token = parsed_args.get('auth_token') or None
             if token is None:

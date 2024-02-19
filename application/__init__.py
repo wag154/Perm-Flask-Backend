@@ -27,7 +27,7 @@ def create_app(env = None):
     with app.app_context():
         create_db()
 
-        CORS(app,supports_credentials=True)
+        CORS(app)
         
         from application.controllers import api 
         api.init_app(app)

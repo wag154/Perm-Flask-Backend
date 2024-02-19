@@ -3,12 +3,10 @@ from application.database import db
 from application.model.model import User_Account
 from flask import jsonify, request , make_response
 from flask_restx import Namespace, Resource
-from sqlalchemy import text
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, timedelta
-import json
 from application.controllers.auth_middleware import token_required
 
 api = Namespace('username', description='user account')
@@ -60,7 +58,6 @@ class User_Login(Resource):
  
                    return {"Requirement issues": "requires information"},404
         
-            print("here")
             get_account = User_Account.query.filter_by(username = Username).first()
 
             if not get_account:
@@ -69,10 +66,12 @@ class User_Login(Resource):
             try:
                  
                account_details = get_account._dict()
-               #token
                account_id = account_details["id"]
+
             except Exception as e:
+                 
                  print(str(e))
+
             try:
                 new_exp_time = datetime.utcnow() + timedelta(days=30)
 
@@ -91,9 +90,10 @@ class User_Login(Resource):
                  return response
             
             else:
-                 return {"Sign in": "Password incorrect"},201
+                 return {"Sign in": "Password incorrect"},401
             
         except Exception as e:
+            
             print(str(e))
 
             return {"message" :str(e)},500
