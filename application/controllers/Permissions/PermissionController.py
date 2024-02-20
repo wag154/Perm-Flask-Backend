@@ -7,7 +7,9 @@ api = Namespace('Permission' , description="permission handler")
 
 @api.produces("application/json")
 @api.route("/account")
+
 class Account_Perm(Resource):
+
     @token_required
     def get (self , *args, **kwargs):
         
@@ -52,4 +54,9 @@ class Account_Perm(Resource):
            
             return  {"Error" : str(e)}
             
-            
+    @token_required
+    def post (self, *args, **kwargs):
+        try:
+            pass
+        except Exception as e:
+            return {"message" : str(e)}

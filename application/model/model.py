@@ -11,7 +11,7 @@ class Perm_Org  (db.Model):
 
             "id" : self.id,
             "org_name" : self.org_name
-            
+
         }
     
 class Group_Resources(db.Model):
@@ -36,6 +36,9 @@ class Selected_Admin (db.Model):
 
     __tablename__ = "selectedadmin"
     id = db.Column(db.Integer, primary_key = True)
+    Groups = db.Column(db.String(255), nullable  = True , default = "")
+
+    
 
 
 class User_Account(db.Model):
