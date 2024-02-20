@@ -74,7 +74,7 @@ class Ind_Resource(db.Model):
 
             "id" : self.id,
             "name" : self.resource_name,
-            "resource_type" : self.resource_type
+            "resource_type" : self.resource_type,
 
         }
     
@@ -91,10 +91,15 @@ class Resource_one(db.Model):
             "Parent_id" : self.Parent_id,
             "name" : self.Kanban_name
         }
+class Kaban_Column (db.Model):
+    __tablename__ = "kanbancolumn"
+    id = db.Column (db.Integer, primary_key = True)
+    Parent_id = db.Column(db.Integer,db.ForeignKey("resourceone.id"))
+    name = db.Column (db.String(100), nullable = False)
 
 class Kanban_task (db.Model):
     id = db.Column (db.Integer, primary_key = True)
-    Parent_id = db.Column(db.Integer,db.ForeignKey("resourceone.id"))
+    Parent_id = db.Column(db.Integer,db.ForeignKey("kanbancolumn.id"))
     order = db.Column(db.Integer, nullable = False)
     content = db.Column (db.String(100), nullable = False)
 
@@ -106,9 +111,9 @@ class Kanban_task (db.Model):
             "Parent_id" : self.Parent_id,
             "order" : self.order,
             "content" : self.content
-            
-        }
 
+        }
+# announcement
 class Resource_two (db.Model):
     __tablename__ = "resourcetwo"
     id = db.Column(db.Integer, primary_key= True)
@@ -116,6 +121,7 @@ class Resource_two (db.Model):
     content = db.Column (db.String(255), nullable = False )
     Owner_name = db.Column (db.String(100), db.ForeignKey("useraccounts.username"))
 
+# Calendar
 class Resource_three(db.Model):
     __tablename__ = "resourcethree"
     id = db.Column(db.Integer, primary_key= True)

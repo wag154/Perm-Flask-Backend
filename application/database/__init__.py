@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 db = SQLAlchemy()
 
 def create_db():
-    from application.model.model import User_Account , Perm_Org, Group_Resources ,Ind_Resource , Kanban_task ,Resource_one
+    from application.model.model import User_Account , Perm_Org, Group_Resources ,Ind_Resource , Kanban_task ,Resource_one , Kaban_Column
     db.create_all()
 
     try:

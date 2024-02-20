@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from flask_restx import Namespace, Resource
 from application.controllers.auth_middleware import token_required
-from application.model.model import User_Account , Perm_Org , Group_Resources ,Ind_Resource ,Resource_one , Resource_two, Resource_three
+from application.model.model import User_Account , Perm_Org , Group_Resources ,Ind_Resource ,Resource_one , Resource_two, Resource_three ,Kanban_task ,Kaban_Column
 
 api = Namespace('Permission' , description="permission handler")
 
@@ -58,12 +58,24 @@ class Account_Perm(Resource):
             group_name = group_instance._dict()["resource_group_name"]
 
             org_name = org_instance._dict()["org_name"]
-            print(group_name, org_name)
             resources = Ind_Resource.query.filter_by(group_id = group_id).all()
 
-            print(resources)
+            all_resources = [resource._dict() for resource in resources]
             
+            for resource in  all_resources:
 
+                match resource:
+
+                    case {"resource_type" : 1}:
+
+                        kanban_instance = Resource_one.query.filter_by(Parent_id = resource["id"]).first()
+                        kanban_info = kanban_instance._dict()
+
+                        kanban_instance = Kanban_task.query.filter_by(Parent_id = kanban_info["id"]).all()
+                        print(len(kanban_instance))
+
+                        return {"Kanban name" : kanban_info["name"]}
+                        
             return {"Found" : account_info}
 
 
