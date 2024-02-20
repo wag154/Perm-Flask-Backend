@@ -58,9 +58,10 @@ class Account_Perm(Resource):
             group_name = group_instance._dict()["resource_group_name"]
 
             org_name = org_instance._dict()["org_name"]
-            
+            print(group_name, org_name)
             resources = Ind_Resource.query.filter_by(group_id = group_id).all()
 
+            print(resources)
             
 
             return {"Found" : account_info}
