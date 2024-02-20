@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 db = SQLAlchemy()
 
 def create_db():
-    from application.model.model import User_Account , Perm_Org, Group_Resources ,Ind_Resource , Kanban_task ,Resource_one , Kaban_Column
+    from application.model.model import User_Account , Perm_Org, Group_Resources ,Ind_Resource , Kanban_task ,Resource_one , Kanban_Column
     db.create_all()
 
     try:
@@ -39,16 +39,25 @@ def create_db():
 
             kanban_id = ind_resource_instance._dict()["id"]
 
-            task_instance_one = Kanban_task(Parent_id = kanban_id, order  = 1 , content = "test, order 1")
-            task_instance_two = Kanban_task(Parent_id = kanban_id,order = 2, content = "test, order 2" )
+            column_instance = Kanban_Column (Parent_id= kanban_id,name = "Test Column")
+            db.session.add(column_instance)
+            db.session.commit()
 
+            column_id = column_instance._dict()["id"]
+
+            task_instance_one = Kanban_task(Parent_id = column_id, order  = 1 , content = "test, order 1")
+            task_instance_two = Kanban_task(Parent_id = column_id,order = 2, content = "test, order 2" )
+            
 
             db.session.add(task_instance_one)
             db.session.add(task_instance_two)
 
             db.session.commit()
+
         except Exception as e:
+            
             print(e)
+        
         db.session.close()
 
     except Exception as e:

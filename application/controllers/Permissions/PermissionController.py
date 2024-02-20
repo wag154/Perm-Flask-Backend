@@ -1,7 +1,7 @@
-from flask import jsonify, request
+from flask import jsonify, request , make_response
 from flask_restx import Namespace, Resource
 from application.controllers.auth_middleware import token_required
-from application.model.model import User_Account , Perm_Org , Group_Resources ,Ind_Resource ,Resource_one , Resource_two, Resource_three ,Kanban_task ,Kaban_Column
+from application.model.model import User_Account , Perm_Org , Group_Resources ,Ind_Resource ,Resource_one , Resource_two, Resource_three ,Kanban_task ,Kanban_Column
 
 api = Namespace('Permission' , description="permission handler")
 
@@ -10,7 +10,7 @@ api = Namespace('Permission' , description="permission handler")
 
 class Account_Perm(Resource):
 
-    @token_required
+    @token_required    
     def get (self , *args, **kwargs):
         
         try:
@@ -71,17 +71,24 @@ class Account_Perm(Resource):
                         kanban_instance = Resource_one.query.filter_by(Parent_id = resource["id"]).first()
                         kanban_info = kanban_instance._dict()
 
-                        kanban_instance = Kanban_task.query.filter_by(Parent_id = kanban_info["id"]).all()
-                        print(len(kanban_instance))
+                        # figure out len of tasks
+                        kanban_task_instance = Kanban_task.query.filter_by(Parent_id = kanban_info["id"]).all()
 
-                        return {"Kanban name" : kanban_info["name"]}
-                        
+                        response = make_response( {"Kanban name" : [group_name , org_name, kanban_info["name"]]} )
+                        response.set_cookie('kanban_id',str(kanban_info["id"]), httponly=True)
+
+                        return response
+                    
+                    case {"resource_type" : 2}:
+                        # add more for different types
+                        pass
+
             return {"Found" : account_info}
 
 
         except Exception as e:
            
-            return  {"Error" : str(e)}
+            return  {"Error" : str(e)}, 404
             
     @token_required
     def post (self, *args, **kwargs):

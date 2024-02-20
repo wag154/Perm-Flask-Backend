@@ -91,11 +91,17 @@ class Resource_one(db.Model):
             "Parent_id" : self.Parent_id,
             "name" : self.Kanban_name
         }
-class Kaban_Column (db.Model):
+class Kanban_Column (db.Model):
     __tablename__ = "kanbancolumn"
     id = db.Column (db.Integer, primary_key = True)
     Parent_id = db.Column(db.Integer,db.ForeignKey("resourceone.id"))
     name = db.Column (db.String(100), nullable = False)
+
+    def _dict(self):
+        return {
+            "id" : self.id,
+            "name" : self.name
+        }
 
 class Kanban_task (db.Model):
     id = db.Column (db.Integer, primary_key = True)
