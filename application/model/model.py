@@ -32,18 +32,8 @@ class Group_Resources(db.Model):
     
         return (self.view_level < level)
 
-class Selected_Admin (db.Model):
-
-    __tablename__ = "selectedadmin"
-    id = db.Column(db.Integer, primary_key = True)
-    Groups = db.Column(db.String(255), nullable  = True , default = "")
-
-    
-
-
 class User_Account(db.Model):
     __tablename__ = "useraccounts"
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
@@ -74,6 +64,16 @@ class Ind_Resource(db.Model):
     resource_type = db.Column (db.Integer, nullable = False)
     resource_name = db.Column (db.String(100), nullable = False)
 
+    def _dict(self):
+
+        return {
+
+            "id" : self.id,
+            "name" : self.resource_name,
+            "resource_type" : self.resource_type
+
+        }
+
 #kanban
 class Resource_one(db.Model):
     __tablename__  ="resourceone"
@@ -86,3 +86,9 @@ class Kanban_task (db.Model):
     Parent_id = db.Column(db.Integer,db.ForeignKey("resourceone.id"))
     order = db.Column(db.Integer, nullable = False)
     content = db.Column (db.String(100), nullable = False)
+
+class Resource_two (db.Model):
+    __tablename__ = "resourcetwo"
+    id = db.Column(db.Integer, primary_key= True)
+    Parent_id = db.Column(db.Integer,db.ForeignKey("indresource.id"))
+
