@@ -85,11 +85,29 @@ class Resource_one(db.Model):
     Parent_id = db.Column(db.Integer,db.ForeignKey("indresource.id"))
     Kanban_name = db.Column(db.String(100), nullable = False)
 
+    def _dict(self):
+        return {
+            "id" : self.id,
+            "Parent_id" : self.Parent_id,
+            "name" : self.Kanban_name
+        }
+
 class Kanban_task (db.Model):
     id = db.Column (db.Integer, primary_key = True)
     Parent_id = db.Column(db.Integer,db.ForeignKey("resourceone.id"))
     order = db.Column(db.Integer, nullable = False)
     content = db.Column (db.String(100), nullable = False)
+
+    def _dict(self):
+
+        return {
+        
+            "id" : self.id,
+            "Parent_id" : self.Parent_id,
+            "order" : self.order,
+            "content" : self.content
+            
+        }
 
 class Resource_two (db.Model):
     __tablename__ = "resourcetwo"

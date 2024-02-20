@@ -29,6 +29,8 @@ def create_db():
         db.session.add(resource_instance)
         db.session.commit()
 
+        
+
         db.session.close()
 
     except Exception as e:
