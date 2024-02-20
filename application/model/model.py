@@ -127,11 +127,25 @@ class Resource_two (db.Model):
     content = db.Column (db.String(255), nullable = False )
     Owner_name = db.Column (db.String(100), db.ForeignKey("useraccounts.username"))
 
+    def _dict(self):
+        return{
+        
+        "id" : self.id,
+        "content" : self.content,
+        "Owner_name": self.Owner_name
+
+        }
+
 # Calendar
 class Resource_three(db.Model):
     __tablename__ = "resourcethree"
     id = db.Column(db.Integer, primary_key= True)
     Parent_id = db.Column(db.Integer,db.ForeignKey("indresource.id"))
     title = db.Column(db.String(100), nullable = False)
+
+class Time_Frame(db.Model):
+    __tablename__ = "timeframe"
+    id = db.Column (db.Integer, primary_key = True)
+    Parent_id = db.Column(db.Integer,db.ForeignKey("resourcethree.id"))
     start_date = db.Column (db.DateTime, nullable = False , default = datetime.utcnow)
     due_date = db.Column(db.DateTime, nullable = True)

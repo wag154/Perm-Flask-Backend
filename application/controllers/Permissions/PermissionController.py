@@ -18,7 +18,6 @@ class Account_Perm(Resource):
             account_instance = User_Account.query.filter_by(id = kwargs["user_id"]).first()
             account_info = account_instance._dict()
             
-            
             try :
 
               org_id = account_info["org_id"]
@@ -61,6 +60,9 @@ class Account_Perm(Resource):
             resources = Ind_Resource.query.filter_by(group_id = group_id).all()
 
             all_resources = [resource._dict() for resource in resources]
+
+            response_content = [{"group_name" : group_name} , {"org_name" : org_name}]
+            cookie_contents =[]
             
             for resource in  all_resources:
 
@@ -71,20 +73,29 @@ class Account_Perm(Resource):
                         kanban_instance = Resource_one.query.filter_by(Parent_id = resource["id"]).first()
                         kanban_info = kanban_instance._dict()
 
-                        # figure out len of tasks
+                        # figure out len of tasks for future feature
+                        
                         kanban_task_instance = Kanban_task.query.filter_by(Parent_id = kanban_info["id"]).all()
 
-                        response = make_response( {"Kanban name" : [group_name , org_name, kanban_info["name"]]} )
-                        response.set_cookie('kanban_id',str(kanban_info["id"]), httponly=True)
-
-                        return response
-                    
+                        response_content.append({"kanban" : {"kanban_name" : kanban_info["name"]} })
+                        cookie_contents.append({'kanban_id':str(kanban_info["id"])})
+                                      
                     case {"resource_type" : 2}:
-                        # add more for different types
-                        pass
+                        
+                        announcement_instance = Resource_two.query.filter_by(Parent_id = resource["id"])
+                        announcement_info = announcement_instance._dict()
 
-            return {"Found" : account_info}
+                        response_content.append( {"announcement" : [announcement_info["content"], announcement_info["Owner_name"]]} )
+           
+            response = make_response(response_content)
 
+            for cookie in cookie_contents:
+
+                key = str(list(cookie.keys())[0])
+
+                response.set_cookie(key, str(cookie[key]), httponly = True)
+            
+            return response
 
         except Exception as e:
            
