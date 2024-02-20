@@ -1,4 +1,5 @@
 from application.database import db
+from datetime import datetime
 
 class Perm_Org  (db.Model):
     __tablename__ = "permorg"
@@ -44,7 +45,9 @@ class User_Account(db.Model):
     group_id = db.Column(db.Integer,db.ForeignKey("groupresources.id"))
 
     def _dict(self):
+
         return {
+
             "id" : self.id,
             "username":self.username,
             "password":self.password,
@@ -53,6 +56,7 @@ class User_Account(db.Model):
             "level" : self.level,
             "org_id" : self.org_id,
             "group_id" : self.group_id
+
         }
 
 
@@ -73,7 +77,7 @@ class Ind_Resource(db.Model):
             "resource_type" : self.resource_type
 
         }
-
+    
 #kanban
 class Resource_one(db.Model):
     __tablename__  ="resourceone"
@@ -91,4 +95,13 @@ class Resource_two (db.Model):
     __tablename__ = "resourcetwo"
     id = db.Column(db.Integer, primary_key= True)
     Parent_id = db.Column(db.Integer,db.ForeignKey("indresource.id"))
+    content = db.Column (db.String(255), nullable = False )
+    Owner_name = db.Column (db.Integer, db.ForeignKey("useraccounts.username"))
 
+class Resource_three(db.Model):
+    __tablename__ = "resourcethree"
+    id = db.Column(db.Integer, primary_key= True)
+    Parent_id = db.Column(db.Integer,db.ForeignKey("indresource.id"))
+    title = db.Column(db.String(100), nullable = False)
+    start_date = db.Column (db.DateTime, nullable = False , default = datetime.utcnow)
+    due_date = db.Column(db.DateTime, nullable = True)

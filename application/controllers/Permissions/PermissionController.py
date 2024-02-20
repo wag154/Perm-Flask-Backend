@@ -61,6 +61,10 @@ class Account_Perm(Resource):
 
             resources = Ind_Resource.query.filter_by(group_id = group_id).all()
 
+            
+
+
+
             return {"Found" : account_info}
 
 
@@ -70,7 +74,10 @@ class Account_Perm(Resource):
             
     @token_required
     def post (self, *args, **kwargs):
+
         try:
             pass
+
         except Exception as e:
+        
             return {"message" : str(e)}
