@@ -96,7 +96,7 @@ class Resource_two (db.Model):
     id = db.Column(db.Integer, primary_key= True)
     Parent_id = db.Column(db.Integer,db.ForeignKey("indresource.id"))
     content = db.Column (db.String(255), nullable = False )
-    Owner_name = db.Column (db.Integer, db.ForeignKey("useraccounts.username"))
+    Owner_name = db.Column (db.String(100), db.ForeignKey("useraccounts.username"))
 
 class Resource_three(db.Model):
     __tablename__ = "resourcethree"

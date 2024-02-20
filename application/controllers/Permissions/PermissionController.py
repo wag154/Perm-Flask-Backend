@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from flask_restx import Namespace, Resource
 from application.controllers.auth_middleware import token_required
-from application.model.model import User_Account , Perm_Org , Group_Resources ,Ind_Resource
+from application.model.model import User_Account , Perm_Org , Group_Resources ,Ind_Resource ,Resource_one , Resource_two, Resource_three
 
 api = Namespace('Permission' , description="permission handler")
 
@@ -58,12 +58,10 @@ class Account_Perm(Resource):
             group_name = group_instance._dict()["resource_group_name"]
 
             org_name = org_instance._dict()["org_name"]
-
+            
             resources = Ind_Resource.query.filter_by(group_id = group_id).all()
 
             
-
-
 
             return {"Found" : account_info}
 
