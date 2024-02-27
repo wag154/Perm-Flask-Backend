@@ -74,6 +74,7 @@ class Ind_Resource(db.Model):
 
             "id" : self.id,
             "name" : self.resource_name,
+            "group_id" : self.group_id,
             "resource_type" : self.resource_type,
 
         }
@@ -108,6 +109,8 @@ class Kanban_task (db.Model):
     Parent_id = db.Column(db.Integer,db.ForeignKey("kanbancolumn.id"))
     order = db.Column(db.Integer, nullable = False)
     content = db.Column (db.String(100), nullable = False)
+    task_creation = db.Column(db.DateTime , nullable = True, default = datetime.utcnow)
+    task_change = db.Column(db.DateTime, nullable = True, default = datetime.utcnow)
 
     def _dict(self):
 

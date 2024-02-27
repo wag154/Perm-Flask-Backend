@@ -48,7 +48,6 @@ def create_db():
             task_instance_one = Kanban_task(Parent_id = column_id, order  = 1 , content = "test, order 1")
             task_instance_two = Kanban_task(Parent_id = column_id,order = 2, content = "test, order 2" )
             
-
             db.session.add(task_instance_one)
             db.session.add(task_instance_two)
 
